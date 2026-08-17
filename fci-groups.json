@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Sheepdogs and Cattledogs (except Swiss Cattledogs)" },
+  { "id": 2, "name": "Pinscher and Schnauzer - Molossoid and Swiss Mountain and Cattledogs" },
+  { "id": 3, "name": "Terriers" },
+  { "id": 4, "name": "Dachshunds" },
+  { "id": 5, "name": "Spitz and primitive types" },
+  { "id": 6, "name": "Scent hounds and related breeds" },
+  { "id": 7, "name": "Pointing Dogs" },
+  { "id": 8, "name": "Retrievers - Flushing Dogs - Water Dogs" },
+  { "id": 9, "name": "Companion and Toy Dogs" },
+  { "id": 10, "name": "Sighthounds" }
+]

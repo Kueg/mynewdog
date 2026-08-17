@@ -1,0 +1,6 @@
+@media(max-width:720px){
+  .landing-main p br.appearance-break{display:block}
+  .landing-photo{height:100vw;max-height:none}
+  .landing-copy{min-height:calc(100svh - 100vw)}
+  .landing-main h1{font-size:clamp(48px,14.4vw,72px);letter-spacing:-4.8px;margin-bottom:32px}
+}
