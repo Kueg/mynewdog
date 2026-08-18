@@ -1,4 +1,6 @@
 const app = document.querySelector('#app');
+const analytics = window.MyPesAnalytics || { goal() {}, answer() {} };
+const donationUrl = 'https://tips.yandex.ru/guest/payment/9472970';
 
 let breedProfiles = [];
 let breedProfilesStatus = 'loading';
@@ -249,13 +251,13 @@ let adaptiveIndex = 0;
 let activeAdaptive = [];
 let answers = {};
 
-function footer() { return `<footer class="site-footer"><a href="donate.html">Поддержать проект&nbsp; →</a><img src="assets/heart.svg?v=2" alt="Поддержать проект"></footer>`; }
+function footer() { return `<footer class="site-footer"><a href="${donationUrl}" target="_blank" rel="noopener" data-donation="footer">Поддержать проект&nbsp; →</a><img src="assets/heart.svg?v=2" alt="Поддержать проект"></footer>`; }
 
 function home() {
   const isLoading = breedProfilesStatus === 'loading';
   const startCopy = isLoading ? 'Загружаем базу…' : 'Бесплатный тест';
-  app.innerHTML = `<main class="landing-page"><section class="landing-copy"><header class="landing-header"><a class="brand-lockup" href="index.html"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><div class="landing-main"><h1>Какая<br>собака мне<br>подойдёт?</h1><p>Выбери собаку не по внешности,<br class="appearance-break">а&nbsp;по характеру, образу жизни и&nbsp;тому,<br>насколько вам будет комфортно вместе</p><div class="landing-cta"><button class="button" id="start" type="button" ${isLoading ? 'disabled' : ''}>${startCopy}</button><span><i>◷</i> 5 мин</span></div></div><footer class="landing-footer"><a href="donate.html">Поддержать проект&nbsp; →</a><img class="heart-icon" src="assets/heart.svg?v=2" alt="Поддержать проект"></footer></section><figure class="landing-photo"><img src="assets/dog-image-2.png" alt="Собака лежит на траве"></figure></main>`;
-  document.querySelector('#start').addEventListener('click', () => { coreIndex = 0; adaptiveIndex = 0; activeAdaptive = []; answers = {}; renderQuestion(); });
+  app.innerHTML = `<main class="landing-page"><section class="landing-copy"><header class="landing-header"><a class="brand-lockup" href="index.html"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><div class="landing-main"><h1>Какая<br>собака мне<br>подойдёт?</h1><p>Выбери собаку не по внешности,<br class="appearance-break">а&nbsp;по характеру, образу жизни и&nbsp;тому,<br>насколько вам будет комфортно вместе</p><div class="landing-cta"><button class="button" id="start" type="button" ${isLoading ? 'disabled' : ''}>${startCopy}</button><span><i>◷</i> 5 мин</span></div></div><footer class="landing-footer"><a href="${donationUrl}" target="_blank" rel="noopener" data-donation="landing">Поддержать проект&nbsp; →</a><img class="heart-icon" src="assets/heart.svg?v=2" alt="Поддержать проект"></footer></section><figure class="landing-photo"><img src="assets/dog-image-2.png" alt="Собака лежит на траве"></figure></main>`;
+  document.querySelector('#start').addEventListener('click', () => { coreIndex = 0; adaptiveIndex = 0; activeAdaptive = []; answers = {}; analytics.goal('quiz_start'); renderQuestion(); });
 }
 
 function currentQuestion() { return coreIndex < coreQuestions.length ? coreQuestions[coreIndex] : activeAdaptive[adaptiveIndex]; }
@@ -314,6 +316,7 @@ function renderQuestion() {
 }
 
 function goBack() {
+  analytics.goal('quiz_back', { question_id: currentQuestion()?.id || 'unknown' });
   if (coreIndex >= coreQuestions.length && adaptiveIndex > 0) adaptiveIndex -= 1;
   else if (coreIndex >= coreQuestions.length) coreIndex = coreQuestions.length - 1;
   else if (coreIndex > 0) coreIndex -= 1;
@@ -359,13 +362,21 @@ function plannedAdaptiveQuestions() {
   return [...forced, ...useful].slice(0, 3);
 }
 function goNext() {
+  const data = currentQuestion();
+  const response = answers[data.id];
+  analytics.answer(data.id, isMulti(data) ? response || [] : response, coreIndex < coreQuestions.length ? coreIndex + 1 : adaptiveIndex + 1, coreIndex < coreQuestions.length ? 'core' : 'adaptive');
   if (coreIndex < coreQuestions.length - 1) { coreIndex += 1; renderQuestion(); return; }
   if (coreIndex === coreQuestions.length - 1) {
     activeAdaptive = plannedAdaptiveQuestions();
-    if (activeAdaptive.length) { coreIndex = coreQuestions.length; adaptiveIndex = 0; renderQuestion(); } else renderResult();
+    if (activeAdaptive.length) { coreIndex = coreQuestions.length; adaptiveIndex = 0; renderQuestion(); } else completeQuiz();
     return;
   }
-  if (adaptiveIndex < activeAdaptive.length - 1) { adaptiveIndex += 1; renderQuestion(); } else renderResult();
+  if (adaptiveIndex < activeAdaptive.length - 1) { adaptiveIndex += 1; renderQuestion(); } else completeQuiz();
+}
+
+function completeQuiz() {
+  analytics.goal('quiz_complete', { core_questions: coreQuestions.length, adaptive_questions: activeAdaptive.length });
+  renderResult();
 }
 
 function buildUserProfile() {
@@ -609,6 +620,7 @@ function renderResult(profileOverride = null) {
   const breeds = getBreedProfiles();
   const result = actualResult(profile, breeds);
   if (!result) { renderDatabasePending(profile); return; }
+  analytics.goal('result_view', { result: { fci_group: result.primary.group, score: result.primary.score } });
   const isWeak = result.fit === 'weak';
   const good = humanReasons(result.top.result.details, 'good');
   const hard = humanReasons(result.top.result.details, 'hard');
@@ -624,7 +636,7 @@ function renderResult(profileOverride = null) {
 
 function commonResultSections(includeProfile = true) {
   const profileSection = includeProfile ? `<section class="result-section result-card"><h2>Ваш профиль предпочтений</h2><ul class="result-list">${profileRows()}</ul></section>` : '';
-  return `${profileSection}<section class="result-section next-steps"><h2>Что делать дальше</h2><div class="next-grid"><article class="result-card"><h3>Чек-лист до появления собаки</h3><ul class="result-list"><li>Познакомиться с конкретной собакой или родителями щенка.</li><li>Проверить документы, условия содержания и обследования.</li><li>Подготовить лежанку, миски, корм, игрушки, шлейку и обычный поводок.</li></ul></article><article class="result-card consultation-card"><h3>Консультация с кинологом</h3><p>Разберём ваши ответы, образ жизни и несколько конкретных пород до решения.</p><button class="button" id="consultation-button" type="button">Оставить заявку</button></article></div></section><section class="result-section result-card"><h2>Жизнь с собакой</h2><p class="section-note">Даже хорошо подобранная собака остаётся собакой. Это ежедневные прогулки, расходы на корм и ветеринара, организация поездок, обучение, грязные лапы и иногда испорченные вещи. Щенок может первое время ходить в туалет дома, будить ночью, грызть вещи и плохо оставаться один. Взрослой собаке тоже понадобится время на адаптацию. Хороший подбор делает совместную жизнь проще, но не делает собаку беспроблемной.</p><p class="table-note">Породный профиль описывает тенденции, а не гарантирует характер конкретной собаки.</p></section><section class="result-section bri-support"><img src="assets/dog-image-2.png" alt="Бри"><div><p class="result-kicker">Для Бри и проекта</p><h2>На новую игрушку Бри</h2><p>Тест останется бесплатным. Если он оказался полезен, можно поддержать проект.</p><a class="button" href="donate.html">Поддержать проект</a></div></section>${footer()}`;
+  return `${profileSection}<section class="result-section next-steps"><h2>Что делать дальше</h2><div class="next-grid"><article class="result-card"><h3>Чек-лист до появления собаки</h3><ul class="result-list"><li>Познакомиться с конкретной собакой или родителями щенка.</li><li>Проверить документы, условия содержания и обследования.</li><li>Подготовить лежанку, миски, корм, игрушки, шлейку и обычный поводок.</li></ul></article><article class="result-card consultation-card"><h3>Консультация с кинологом</h3><p>Разберём ваши ответы, образ жизни и несколько конкретных пород до решения.</p><button class="button" id="consultation-button" type="button">Оставить заявку</button></article></div></section><section class="result-section result-card"><h2>Жизнь с собакой</h2><p class="section-note">Даже хорошо подобранная собака остаётся собакой. Это ежедневные прогулки, расходы на корм и ветеринара, организация поездок, обучение, грязные лапы и иногда испорченные вещи. Щенок может первое время ходить в туалет дома, будить ночью, грызть вещи и плохо оставаться один. Взрослой собаке тоже понадобится время на адаптацию. Хороший подбор делает совместную жизнь проще, но не делает собаку беспроблемной.</p><p class="table-note">Породный профиль описывает тенденции, а не гарантирует характер конкретной собаки.</p></section><section class="result-section bri-support"><img src="assets/dog-image-2.png" alt="Бри"><div><p class="result-kicker">Для Бри и проекта</p><h2>На новую игрушку Бри</h2><p>Тест останется бесплатным. Если он оказался полезен, можно поддержать проект.</p><a class="button" href="${donationUrl}" target="_blank" rel="noopener" data-donation="result">Поддержать проект</a></div></section>${footer()}`;
 }
 
 function renderDatabasePending(profile) {
