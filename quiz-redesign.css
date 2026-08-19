@@ -90,3 +90,76 @@
   .result-page .breed-card h3,.result-page .result-section h2{overflow-wrap:anywhere}
   .result-page .breed-card-meta{flex-wrap:wrap}
 }
+
+/* Square breed photos and keep wide result content inside the viewport. */
+.breed-card>img,
+.breed-ranking-card>img{
+  aspect-ratio:1/1;
+  object-fit:cover;
+}
+
+.result-page{
+  width:100%;
+  min-width:0;
+  overflow-x:hidden;
+}
+
+.result-page .result-section,
+.result-page .result-table-wrap,
+.result-page .breed-grid,
+.result-page .breed-ranking-grid,
+.result-page .breed-card,
+.result-page .breed-ranking-card{
+  min-width:0;
+  max-width:100%;
+}
+
+.result-page .result-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:720px){
+  html,
+  body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  .result-page .result-section{
+    width:100%;
+  }
+
+  .result-page .result-table{
+    width:100%;
+    min-width:0;
+    table-layout:fixed;
+  }
+
+  .result-page .result-table th,
+  .result-page .result-table td{
+    width:auto;
+    padding:10px 7px;
+    font-size:11px;
+    line-height:1.25;
+    overflow-wrap:anywhere;
+  }
+
+  .result-page .result-table th:first-child,
+  .result-page .result-table td:first-child,
+  .result-page .breed-detail-table td:last-child{
+    width:auto;
+  }
+
+  .result-page .result-table .trait-meter{
+    gap:2px;
+  }
+
+  .result-page .result-table .trait-meter i{
+    width:8px;
+    height:6px;
+  }
+}
