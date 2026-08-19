@@ -1,6 +1,12 @@
 @media(max-width:720px){
   .landing-main p br.appearance-break{display:block}
-  .landing-photo{height:100vw;max-height:none}
-  .landing-copy{min-height:calc(100svh - 100vw)}
-  .landing-main h1{font-size:clamp(48px,14.4vw,72px);letter-spacing:-4.8px;margin-bottom:32px}
+  .landing-photo{height:min(100vw,44svh);max-height:none}
+  .landing-copy{min-height:calc(100svh - min(100vw,44svh))}
+  .landing-main h1{font-size:clamp(40px,11.8vw,54px);letter-spacing:-3.4px;line-height:.9;margin-bottom:20px}
+  .landing-main p{font-size:16px;line-height:1.32}
+  .landing-cta{margin-top:20px}
+  .landing-cta .button{padding:15px 14px}
+  .landing-cta span{margin-top:12px;font-size:15px}
+  .landing-footer{padding-top:20px;font-size:15px}
+  .landing-footer span{font-size:28px}
 }

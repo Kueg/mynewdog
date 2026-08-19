@@ -13,7 +13,10 @@ const breedProfilesReady = fetch('data/breed-profiles.researched-v2.json?v=1')
   })
   .then((payload) => {
     if (!Array.isArray(payload.profiles)) throw new Error('В базе нет массива profiles');
-    breedProfiles = payload.profiles;
+    breedProfiles = payload.profiles.map((breed) => ({
+      ...breed,
+      image: `assets/breeds/${breed.breedFamily}.png`
+    }));
     window.BREED_PROFILES = breedProfiles;
     breedProfilesStatus = 'ready';
   })
@@ -33,33 +36,31 @@ const question = (id, title, options, extra = {}) => ({ id, title, options, ...e
 // Browser representation of quiz-config-v3.json. Values and IDs are kept verbatim.
 const coreQuestions = [
   question('household', 'С кем будет жить собака?', [
-    option('adults', 'Только взрослые люди', null, { flags: ['ADULTS_ONLY'] }),
+    option('adults', 'Взрослые', null, { flags: ['ADULTS_ONLY'] }),
     option('young_children', 'Дети младше 6 лет', null, { flags: ['YOUNG_CHILDREN'] }),
-    option('children', 'Дети 6–12 лет', null, { flags: ['CHILDREN'] }),
-    option('teens', 'Подростки', null, { flags: ['TEENS'] }),
     option('cat', 'Кошка', null, { flags: ['CAT'] }),
     option('dog', 'Другая собака', null, { flags: ['DOG'] }),
-    option('small_pets', 'Птицы, грызуны, кролики или другие небольшие животные', null, { flags: ['SMALL_PETS'] })
+    option('small_pets', 'Другие животные', null, { flags: ['SMALL_PETS'] })
   ], { type: 'multi_select', helper: 'Можно выбрать несколько вариантов.' }),
   question('activity', 'Сколько времени вы готовы гулять с собакой каждый день?', [
-    option('a1', 'Около 30–45 минут за день', { activity: 1 }), option('a2', 'Около часа', { activity: 2 }),
+    option('a1', '30 минут в день', { activity: 1 }), option('a2', 'Около часа', { activity: 2 }),
     option('a3', 'Примерно 1–1,5 часа', { activity: 3 }), option('a4', 'Примерно 1,5–2 часа', { activity: 4 }), option('a5', '2 часа и больше', { activity: 5 })
   ], { helper: 'Представьте обычный холодный будний день, когда вы устали. Выбирайте реальный ритм, а не идеальный.' }),
-  question('mental_work', 'Как часто вы готовы заниматься с собакой?', [
-    option('m1', 'Буду учить воспитывать только щенка', { mentalWork: 1 }), option('m2', 'Иногда немного поиграть или что-нибудь поучить', { mentalWork: 2 }),
+  question('mental_work', 'Как часто вы хотите заниматься с собакой?', [
+    option('m1', 'Хочу заложить основы воспитания в щенячьем возрасте, а дальше заниматься только по необходимости', { mentalWork: 1 }), option('m2', 'Иногда немного поиграть или что-нибудь поучить', { mentalWork: 2 }),
     option('m3', 'По 10–15 минут почти каждый день нормально', { mentalWork: 3 }), option('m4', 'Мне нравится регулярно учить собаку чему-нибудь новому', { mentalWork: 4 }), option('m5', 'Хочу дрессировку, спорт или другие серьёзные занятия', { mentalWork: 5 })
   ], { helper: 'Команды, игры на поиск, обучение новому и другие совместные задачи.' }),
   question('biddability', 'Вы дали собаке команду, но её что-то отвлекло', [
     option('b5', 'После обучения хочу, чтобы она почти всегда быстро реагировала на меня', { biddabilityMin: 5 }), option('b4', 'Хочу хороший контроль, хотя иногда могу повторить команду', { biddabilityMin: 4 }),
     option('b3', 'Нормально, если иногда приходится немного договариваться', { biddabilityMin: 3 }), option('b2', 'Не страшно, если собака нередко сначала делает по-своему', { biddabilityMin: 2 }), option('b1', 'Мне комфортна собака, от которой я не жду особой исполнительности', { biddabilityMin: 1 })
   ]),
-  question('independence', 'На прогулке собаку заинтересовал новый запах, вы зовёте её дальше, что вам ближе?', [
+  question('independence', 'На прогулке собаку заинтересовал новый запах, но вы зовёте её дальше. Как она отреагирует?', [
     option('i1', 'Хочу, чтобы она сразу переключалась на меня', { independence: 1 }), option('i2', 'Может немного понюхать, но довольно быстро идёт за мной', { independence: 2 }),
     option('i3', 'Мне нравится баланс: иногда за мной, иногда занимается своими делами', { independence: 3 }), option('i4', 'Нормально, если она часто предпочитает сначала закончить свои дела', { independence: 4 }), option('i5', 'Мне нравятся очень самостоятельные собаки', { independence: 5 })
   ]),
-  question('recall', 'Насколько для вас важно, чтобы собака отзывалась на прогулке?', [
-    option('r5', 'Очень важно: хочу уверенный отзыв на команду', { recallMin: 5 }), option('r4', 'Важно: хочу гулять без постоянного контроля', { recallMin: 4 }),
-    option('r3', 'Зависит от места и ситуации', { recallMin: 3 }), option('r2', 'Длинный поводок меня устраивает', { recallMin: 2 }), option('r1', 'Не критично, если собака не всегда подходит по команде', { recallMin: 1 })
+  question('recall', 'Представьте безопасное место, где собаку можно отпустить с поводка. Насколько важно, чтобы она вернулась к вам по команде?', [
+    option('r5', 'Очень важно: после обучения она должна почти всегда сразу возвращаться', { recallMin: 5 }), option('r4', 'Важно: хочу надёжный отзыв, но редкие задержки допустимы', { recallMin: 4 }),
+    option('r3', 'Зависит от места и ситуации: иногда могу подождать', { recallMin: 3 }), option('r2', 'Если отзыв ненадёжный, буду использовать длинный поводок', { recallMin: 2 }), option('r1', 'Не планирую отпускать собаку с поводка', { recallMin: 1 })
   ]),
   question('prey_drive', 'Перед собакой пробежала кошка, как она поведет себя?', [
     option('p1', 'Хочу, чтобы желание преследовать было минимальным', { preyDriveMax: 1 }), option('p2', 'Может заинтересоваться, но должна довольно легко переключаться', { preyDriveMax: 2 }),
@@ -123,7 +124,7 @@ const adaptiveQuestions = [
   question('adaptive_drool', 'Какой уровень слюноотделения вам подойдёт?', [
     option('dr1', 'Почти без слюней', { droolMax: 1 }), option('dr2', 'Небольшое слюноотделение меня устроит', { droolMax: 2 }), option('dr3', 'Умеренное слюноотделение — нормально', { droolMax: 3 }), option('dr4', 'Готов регулярно вытирать слюни', { droolMax: 4 }), option('dr5', 'Количество слюней для меня не важно', { droolMax: 5 })
   ], { trait: 'drool' }),
-  question('adaptive_power', 'Если собака резко рванула поводок, насколько физически мощную собаку вам комфортно контролировать?', [
+  question('adaptive_power', 'Собака резко дёрнула поводок. Насколько сильную собаку вам будет комфортно удерживать?', [
     option('pw1', 'Хочу максимально лёгкую по физической силе', { powerMax: 1 }), option('pw2', 'Небольшая или умеренная сила', { powerMax: 2 }), option('pw3', 'Средняя физическая мощь нормально', { powerMax: 3 }), option('pw4', 'Крупная и сильная тоже нормально', { powerMax: 4 }), option('pw5', 'Очень мощная собака меня не пугает', { powerMax: 5 })
   ], { trait: 'power' })
 ];
@@ -244,7 +245,7 @@ const breedDescriptions = {
   saluki: 'Выносливый пустынный охотник, сдержанный с чужими, самостоятельный и очень быстрый.',
   whippet: 'Компактный спринтер, обычно тихий и расслабленный дома, но азартный при движущейся цели.'
 };
-const traitLabels = { activity: 'ритм прогулок', mentalWork: 'занятия с собакой', biddability: 'управляемость', independence: 'самостоятельность', recall: 'отзыв на прогулке', preyDrive: 'интерес к погоне', guarding: 'сторожевое поведение', strangerFriendliness: 'отношение к гостям', dogSociability: 'контакт с другими собаками', affection: 'близость дома', offSwitch: 'спокойствие дома', sensitivity: 'реакция на шум', vocality: 'голосистость', grooming: 'уход за шерстью', reactivity: 'эмоциональная реакция', shedding: 'линька', drool: 'слюни', power: 'физическая сила', healthBurden: 'породные риски для здоровья' };
+const traitLabels = { activity: 'ритм прогулок', mentalWork: 'занятия с собакой', biddability: 'управляемость', independence: 'самостоятельность', recall: 'отзыв на прогулке', preyDrive: 'интерес к погоне', guarding: 'сторожевое поведение', strangerFriendliness: 'отношение к гостям', dogSociability: 'контакт с другими собаками', affection: 'контакт с человеком дома', offSwitch: 'спокойствие дома', sensitivity: 'реакция на шум', vocality: 'голосистость', grooming: 'уход за шерстью', reactivity: 'эмоциональная реакция', shedding: 'линька', drool: 'слюни', power: 'физическая сила', healthBurden: 'породные риски для здоровья' };
 
 let coreIndex = 0;
 let adaptiveIndex = 0;
@@ -256,7 +257,7 @@ function footer() { return `<footer class="site-footer"><a href="${donationUrl}"
 function home() {
   const isLoading = breedProfilesStatus === 'loading';
   const startCopy = isLoading ? 'Загружаем базу…' : 'Бесплатный тест';
-  app.innerHTML = `<main class="landing-page"><section class="landing-copy"><header class="landing-header"><a class="brand-lockup" href="index.html"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><div class="landing-main"><h1>Какая<br>собака мне<br>подойдёт?</h1><p>Выбери собаку не по внешности,<br class="appearance-break">а&nbsp;по характеру, образу жизни и&nbsp;тому,<br>насколько вам будет комфортно вместе</p><div class="landing-cta"><button class="button" id="start" type="button" ${isLoading ? 'disabled' : ''}>${startCopy}</button><span><i>◷</i> 5 мин</span></div></div><footer class="landing-footer"><a href="${donationUrl}" target="_blank" rel="noopener" data-donation="landing">Поддержать проект&nbsp; →</a><img class="heart-icon" src="assets/heart.svg?v=2" alt="Поддержать проект"></footer></section><figure class="landing-photo"><img src="assets/dog-image-2.png" alt="Собака лежит на траве"></figure></main>`;
+  app.innerHTML = `<main class="landing-page"><section class="landing-copy"><header class="landing-header"><a class="brand-lockup" href="index.html"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><div class="landing-main"><h1>Какая<br>собака мне<br>подойдёт?</h1><p>Выбери собаку не по внешности,<br class="appearance-break">а&nbsp;по характеру, образу жизни и&nbsp;тому,<br>насколько вам будет комфортно вместе</p><div class="landing-cta"><button class="button" id="start" type="button" ${isLoading ? 'disabled' : ''}>${startCopy}</button><span><i>◷</i> 5 мин</span></div></div><footer class="landing-footer"><a href="${donationUrl}" target="_blank" rel="noopener" data-donation="landing">Поддержать проект&nbsp; →</a><img class="heart-icon" src="assets/heart.svg?v=2" alt="Поддержать проект"></footer></section><figure class="landing-photo"><img src="assets/dog-image-2.png" alt="Собака лежит на траве"></figure></main>`;
   document.querySelector('#start').addEventListener('click', () => { coreIndex = 0; adaptiveIndex = 0; activeAdaptive = []; answers = {}; analytics.goal('quiz_start'); renderQuestion(); });
 }
 
@@ -264,13 +265,13 @@ function currentQuestion() { return coreIndex < coreQuestions.length ? coreQuest
 function selectedIds(questionData) { const saved = answers[questionData.id]; return new Set(questionData.type === 'multi_select' ? saved || [] : saved ? [saved] : []); }
 function isMulti(questionData) { return questionData.type === 'multi_select'; }
 function scaleOptions(questionData) { return questionData.options.filter((item) => !item.unknown); }
-function isScaleQuestion(questionData) { return !isMulti(questionData) && scaleOptions(questionData).length === 5 && questionData.options.every((item) => item.set || item.unknown); }
+function isScaleQuestion(questionData) { return ['activity', 'mental_work'].includes(questionData.id); }
 function scaleMarkup(data, selected) {
   const options = scaleOptions(data);
   const selectedOption = options.find((item) => selected.has(item.id));
   const selectedIndex = selectedOption ? options.indexOf(selectedOption) + 1 : 3;
   const unknown = data.options.find((item) => item.unknown);
-  return `<div class="answer-scale ${selectedOption ? 'is-selected' : ''}" data-scale-question="${data.id}"><p class="scale-value">${selectedOption ? selectedOption.label : 'Выберите подходящий уровень'}</p><input class="scale-input" type="range" min="1" max="5" step="1" value="${selectedIndex}" aria-label="Выберите подходящий уровень"><div class="scale-points" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="scale-ends"><span>${options[0].label}</span><span>${options.at(-1).label}</span></div></div>${unknown ? `<button class="scale-unknown ${selected.has(unknown.id) ? 'selected' : ''}" type="button" data-option="${unknown.id}" aria-pressed="${selected.has(unknown.id)}">Не знаю</button>` : ''}`;
+  return `<div class="answer-scale ${selectedOption ? 'is-selected' : ''}" data-scale-question="${data.id}"><p class="scale-value">${selectedOption ? selectedOption.label : 'Выберите подходящий уровень'}</p><div class="scale-control"><div class="scale-line" aria-hidden="true"></div><div class="scale-points" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><input class="scale-input" type="range" min="1" max="5" step="1" value="${selectedIndex}" aria-label="Выберите подходящий уровень"></div><div class="scale-ends"><span>${options[0].label}</span><span>${options.at(-1).label}</span></div></div>${unknown ? `<button class="scale-unknown ${selected.has(unknown.id) ? 'selected' : ''}" type="button" data-option="${unknown.id}" aria-pressed="${selected.has(unknown.id)}">Не знаю</button>` : ''}`;
 }
 
 function renderQuestion() {
@@ -282,8 +283,8 @@ function renderQuestion() {
   const lastCore = !adaptive && coreIndex === coreQuestions.length - 1;
   const nextText = adaptive ? (adaptiveIndex === activeAdaptive.length - 1 ? 'Результат' : 'Дальше') : (lastCore && plannedAdaptiveQuestions().length === 0 ? 'Результат' : 'Дальше');
   const scale = isScaleQuestion(data);
-  const denseAnswers = !scale && data.options.length > 5;
-  app.innerHTML = `<main class="quiz-page"><header class="quiz-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><section class="quiz-content"><div class="quiz-progress"><span>${number}</span><div class="progress"><i style="width:${progress}%"></i></div></div><h1>${data.title}</h1>${data.helper ? `<p class="question-hint">${data.helper}</p>` : ''}${scale ? scaleMarkup(data, selected) : `<div class="answers ${isMulti(data) ? 'answers-multi' : ''} ${denseAnswers ? 'answers-dense' : ''}">${data.options.map((item) => `<button class="answer ${selected.has(item.id) ? 'selected' : ''}" data-option="${item.id}" type="button" aria-pressed="${selected.has(item.id)}">${item.label}</button>`).join('')}</div>`}${isMulti(data) && data.maxSelections ? `<p class="selection-count">Выбрано: ${selected.size}/${data.maxSelections}</p>` : ''}<div class="nav"><button class="back" id="back" type="button" ${coreIndex || adaptiveIndex ? '' : 'disabled'}>Назад</button><button class="button" id="next" type="button" ${selected.size ? '' : 'disabled'}>${nextText}</button></div></section>${footer()}</main>`;
+  const denseAnswers = !scale && isMulti(data) && data.options.length > 5;
+  app.innerHTML = `<main class="quiz-page"><header class="quiz-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><section class="quiz-content"><div class="quiz-progress"><span>${number}</span><div class="progress"><i style="width:${progress}%"></i></div></div><h1>${data.title}</h1>${data.helper ? `<p class="question-hint">${data.helper}</p>` : ''}${scale ? scaleMarkup(data, selected) : `<div class="answers ${isMulti(data) ? 'answers-multi' : ''} ${denseAnswers ? 'answers-dense' : ''}">${data.options.map((item) => `<button class="answer ${selected.has(item.id) ? 'selected' : ''}" data-option="${item.id}" type="button" aria-pressed="${selected.has(item.id)}">${item.label}</button>`).join('')}</div>`}${isMulti(data) && data.maxSelections ? `<p class="selection-count">Выбрано: ${selected.size}/${data.maxSelections}</p>` : ''}<div class="nav"><button class="back" id="back" type="button" ${coreIndex || adaptiveIndex ? '' : 'disabled'}>Назад</button><button class="button" id="next" type="button" ${selected.size ? '' : 'disabled'}>${nextText}</button></div></section>${footer()}</main>`;
   const answerContainer = document.querySelector('.answers');
   answerContainer?.addEventListener('click', (event) => {
     const button = event.target.closest('.answer');
@@ -298,7 +299,7 @@ function renderQuestion() {
     renderQuestion();
   });
   const scaleInput = document.querySelector('.scale-input');
-  scaleInput?.addEventListener('input', (event) => {
+  const selectScaleValue = (event) => {
     const options = scaleOptions(data);
     const item = options[Number(event.currentTarget.value) - 1];
     answers[data.id] = item.id;
@@ -306,7 +307,9 @@ function renderQuestion() {
     scaleRoot.classList.add('is-selected');
     scaleRoot.querySelector('.scale-value').textContent = item.label;
     document.querySelector('#next').disabled = false;
-  });
+  };
+  scaleInput?.addEventListener('input', selectScaleValue);
+  scaleInput?.addEventListener('click', selectScaleValue);
   document.querySelector('.scale-unknown')?.addEventListener('click', (event) => {
     answers[data.id] = event.currentTarget.dataset.option;
     renderQuestion();
@@ -409,7 +412,7 @@ function profileRows() {
     household: 'Кто живёт с собакой', activity: 'Ритм прогулок', mental_work: 'Готовность к занятиям',
     biddability: 'Управляемость', independence: 'Самостоятельность', recall: 'Отзыв на прогулке',
     prey_drive: 'Погоня за животными', stranger_friendliness: 'Отношение к гостям', guarding: 'Сторожевое поведение',
-    dog_sociability: 'Другие собаки', affection: 'Близость дома', off_switch: 'Спокойствие дома',
+    dog_sociability: 'Другие собаки', affection: 'Контакт с человеком дома', off_switch: 'Спокойствие дома',
     sensitivity: 'Реакция на шум', vocality: 'Голосистость', grooming: 'Уход за шерстью',
     health: 'Породные риски для здоровья', dealbreakers: 'Точно не подходит',
     adaptive_reactivity: 'Реактивность', adaptive_shedding: 'Линька', adaptive_drool: 'Слюнотечение', adaptive_power: 'Физическая сила'
@@ -512,8 +515,8 @@ function groupRanking(profile, group) {
   });
 }
 
-function rankCards(items) {
-  return `<div class="breed-ranking-grid">${items.map(({ breed, score, rank }, index) => `<article class="breed-ranking-card"><img src="${breed.image || 'assets/dog-image-2.png'}" alt="${breed.image ? breed.nameRu : ''}"><div><div class="breed-card-meta"><span class="breed-rank">${rank || index + 1} место</span><span class="breed-score">Совместимость ${score}/100</span></div><h3>${breed.nameRu}</h3><p class="breed-description">${breedSubtitle(breed)}</p></div></article>`).join('')}</div>`;
+function rankCards(items, showMeta = true) {
+  return `<div class="breed-ranking-grid">${items.map(({ breed, score, rank }, index) => `<article class="breed-ranking-card"><img src="${breed.image || 'assets/dog-image-2.png'}" alt="${breed.image ? breed.nameRu : ''}"><div>${showMeta ? `<div class="breed-card-meta"><span class="breed-rank">${rank || index + 1} место</span><span class="breed-score">Совместимость ${score}/100</span></div>` : ''}<h3>${breed.nameRu}</h3><p class="breed-description">${breedSubtitle(breed)}</p></div></article>`).join('')}</div>`;
 }
 
 function openAlternativeGroup(profile, group) {
@@ -527,7 +530,7 @@ function openAlternativeGroup(profile, group) {
 function renderGroupPage(profile, group) {
   const items = groupRanking(profile, group);
   if (!items.length) { renderResult(profile); return; }
-  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><section class="result-hero"><p class="result-kicker">Альтернативная категория</p><h1>${fciNames[group]}</h1><p>${fciPurposes[group]} Здесь все проверенные породы этой категории, уже отсортированные по вашим ответам.</p><button class="result-back" id="back-to-result" type="button">← Назад к результату</button></section><section class="result-section"><h2>Породы этой категории</h2><p class="section-note">Чем выше карточка, тем ближе порода к вашему профилю.</p>${rankCards(items)}</section>${footer()}</main>`;
+  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><section class="result-hero"><p class="result-kicker">Альтернативная категория</p><h1>${fciNames[group]}</h1><p>${fciPurposes[group]} Здесь все проверенные породы этой категории, уже отсортированные по вашим ответам.</p><button class="result-back" id="back-to-result" type="button">← Назад к результату</button></section><section class="result-section"><h2>Породы этой категории</h2><p class="section-note">Чем выше карточка, тем ближе порода к вашему профилю.</p>${rankCards(items)}</section>${footer()}</main>`;
   document.querySelector('#back-to-result').addEventListener('click', () => {
     const url = new URL(window.location.href);
     url.searchParams.delete('group');
@@ -551,7 +554,7 @@ function openBreedPage(profile, breedId) {
   renderBreedPage(profile, breedId);
 }
 function breedDetailsTable(breed) {
-  const rows = [['Потребность в активности', 'activity'], ['Потребность в занятиях', 'mentalWork'], ['Управляемость', 'biddability'], ['Самостоятельность', 'independence'], ['Отзыв на прогулке', 'recall'], ['Интерес к погоне', 'preyDrive'], ['Сторожевое поведение', 'guarding'], ['Отношение к гостям', 'strangerFriendliness'], ['Контакт с другими собаками', 'dogSociability'], ['Близость с человеком', 'affection'], ['Спокойствие дома', 'offSwitch'], ['Реакция на шум', 'sensitivity'], ['Лай и вой', 'vocality'], ['Уход за шерстью', 'grooming'], ['Линька', 'shedding'], ['Слюнотечение', 'drool'], ['Физическая сила', 'power'], ['Породные риски для здоровья', 'healthBurden']];
+  const rows = [['Потребность в активности', 'activity'], ['Потребность в занятиях', 'mentalWork'], ['Управляемость', 'biddability'], ['Самостоятельность', 'independence'], ['Отзыв на прогулке', 'recall'], ['Интерес к погоне', 'preyDrive'], ['Сторожевое поведение', 'guarding'], ['Отношение к гостям', 'strangerFriendliness'], ['Контакт с другими собаками', 'dogSociability'], ['Контакт с человеком дома', 'affection'], ['Спокойствие дома', 'offSwitch'], ['Реакция на шум', 'sensitivity'], ['Лай и вой', 'vocality'], ['Уход за шерстью', 'grooming'], ['Линька', 'shedding'], ['Слюнотечение', 'drool'], ['Физическая сила', 'power'], ['Породные риски для здоровья', 'healthBurden']];
   return `<section class="result-section"><h2>Параметры породы</h2><div class="result-table-wrap"><table class="result-table breed-detail-table"><tbody>${rows.map(([label, trait]) => `<tr><td>${label}</td><td>${traitMeter(breed, trait)}</td></tr>`).join('')}</tbody></table></div><p class="table-note">Пять делений — высокий уровень особенности. Это описание тенденций породы, а не гарантия характера конкретной собаки.</p></section>`;
 }
 function breedHealthDetails(breed) {
@@ -575,7 +578,7 @@ function renderBreedPage(profile, breedId) {
   const score = scoreResult ? scoreResult.compatibility : null;
   const good = scoreResult ? humanReasons(scoreResult.details, 'good') : [];
   const hard = scoreResult ? humanReasons(scoreResult.details, 'hard') : [];
-  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><section class="result-hero"><p class="result-kicker">Профиль породы</p><h1>${breed.nameRu}</h1><p>${breedSubtitle(breed)} ${fciPurposes[breed.fciGroup]}</p><button class="result-back" id="back-to-result" type="button">← Назад к результату</button></section><section class="result-section breed-profile-layout"><article class="breed-profile-card"><img src="${breed.image || 'assets/dog-image-2.png'}" alt="${breed.image ? breed.nameRu : ''}"><div><div class="breed-card-meta"><span class="breed-rank">Ваша совместимость</span><span class="breed-score">${score === null ? 'нет данных' : `${score}/100`}</span></div><h2>Что важно знать</h2><p>${healthNote(breed)}.</p><p>${fciPurposes[breed.fciGroup]}</p></div></article><article class="result-card"><h2>Как это совпадает с вами</h2><ul class="result-list">${good.map((item) => `<li>Совпадает ${item}.</li>`).join('') || '<li>Недостаточно данных для оценки.</li>'}</ul>${hard.length ? `<h3 class="breed-risks-heading">На что обратить внимание</h3><ul class="result-list">${hard.map((item) => `<li>${item} может потребовать больше внимания.</li>`).join('')}</ul>` : ''}</article></section>${breedHealthDetails(breed)}${breedDetailsTable(breed)}${breedExplorerMarkup()}${footer()}</main>`;
+  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><section class="result-hero"><p class="result-kicker">Профиль породы</p><h1>${breed.nameRu}</h1><p>${breedSubtitle(breed)} ${fciPurposes[breed.fciGroup]}</p><button class="result-back" id="back-to-result" type="button">← Назад к результату</button></section><section class="result-section breed-profile-layout"><article class="breed-profile-card"><img src="${breed.image || 'assets/dog-image-2.png'}" alt="${breed.image ? breed.nameRu : ''}"><div><div class="breed-card-meta"><span class="breed-rank">Ваша совместимость</span><span class="breed-score">${score === null ? 'нет данных' : `${score}/100`}</span></div><h2>Что важно знать</h2><p>${healthNote(breed)}.</p><p>${fciPurposes[breed.fciGroup]}</p></div></article><article class="result-card"><h2>Как это совпадает с вами</h2><ul class="result-list">${good.map((item) => `<li>Совпадает ${item}.</li>`).join('') || '<li>Недостаточно данных для оценки.</li>'}</ul>${hard.length ? `<h3 class="breed-risks-heading">На что обратить внимание</h3><ul class="result-list">${hard.map((item) => `<li>${item} может потребовать больше внимания.</li>`).join('')}</ul>` : ''}</article></section>${breedHealthDetails(breed)}${breedDetailsTable(breed)}${breedExplorerMarkup()}${footer()}</main>`;
   document.querySelector('#back-to-result').addEventListener('click', () => {
     const url = new URL(window.location.href);
     url.searchParams.delete('breed');
@@ -627,8 +630,8 @@ function renderResult(profileOverride = null) {
   const topBreeds = result.groupBreeds.slice(0, 3);
   const remainingBreeds = result.groupBreeds.slice(3);
   const breedHeading = topBreeds.length === 1 ? 'Лучшее совпадение' : 'Лучшие совпадения';
-  const rankedRest = remainingBreeds.length ? `<section class="result-section"><h2>Все остальные породы этой группы</h2><p class="section-note">Это полный рейтинг проверенных пород в выбранной категории. Чем выше карточка, тем ближе порода к вашим ответам.</p>${rankCards(remainingBreeds.map((item, index) => ({ ...item, rank: index + topBreeds.length + 1 })))}</section>` : '';
-  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><section class="result-hero ${isWeak ? 'pause' : ''}"><h1>Вам подходят<br>${fciNames[result.primary.group]}</h1><p>${fciPurposes[result.primary.group]} ${isWeak ? 'Сильного совпадения нет: это наименее конфликтный вариант среди сравниваемых пород.' : 'Группа выбрана после сравнения конкретных пород с вашим образом жизни и предпочтениями.'}</p></section><section class="result-section match-grid"><article class="result-card"><h2>Почему подходит именно вам</h2><ul class="result-list">${good.map((item) => `<li>Хорошо совпадает ${item}.</li>`).join('')}</ul></article><article class="result-card"><h2>Вам может не подойти</h2><ul class="result-list">${hard.map((item) => `<li>${item}.</li>`).join('')}</ul></article></section><section class="result-section"><h2>${breedHeading}</h2><p class="section-note">1–${topBreeds.length} место из ${result.groupBreeds.length} пород в этой категории.</p><div class="breed-grid">${topBreeds.map(({ breed, score }, index) => `<article class="breed-card"><img src="${breed.image || 'assets/dog-image-2.png'}" alt="${breed.nameRu}"><div class="breed-card-body"><div class="breed-card-meta"><span class="breed-rank">${index + 1} место</span><span class="breed-score">Совместимость ${score}/100</span></div><h3>${breed.nameRu}</h3><p class="breed-description">${breedSubtitle(breed)}</p></div></article>`).join('')}</div></section>${comparisonTable(topBreeds)}${rankedRest}${result.alternative ? `<section class="result-section result-card alternative-card"><h2>Близкая альтернатива</h2><p>${fciNames[result.alternative.group]} — ${result.alternative.score}/100. Она уступила основной категории по совпадению ключевых требований.</p><button class="button" id="show-alternative" type="button">Смотреть породы</button></section>` : ''}${breedExplorerMarkup()}${commonResultSections()}</main>`;
+  const rankedRest = remainingBreeds.length ? `<section class="result-section"><h2>Все остальные породы этой группы</h2><p class="section-note">Другие проверенные породы в выбранной категории.</p>${rankCards(remainingBreeds, false)}</section>` : '';
+  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><section class="result-hero ${isWeak ? 'pause' : ''}"><h1>Вам подходят<br>${fciNames[result.primary.group]}</h1><p>${fciPurposes[result.primary.group]} ${isWeak ? 'Сильного совпадения нет: это наименее конфликтный вариант среди сравниваемых пород.' : 'Группа выбрана после сравнения конкретных пород с вашим образом жизни и предпочтениями.'}</p></section><section class="result-section match-grid"><article class="result-card"><h2>Почему подходит именно вам</h2><ul class="result-list">${good.map((item) => `<li>Хорошо совпадает ${item}.</li>`).join('')}</ul></article><article class="result-card"><h2>Вам может не подойти</h2><ul class="result-list">${hard.map((item) => `<li>${item}.</li>`).join('')}</ul></article></section><section class="result-section"><h2>${breedHeading}</h2><p class="section-note">1–${topBreeds.length} место из ${result.groupBreeds.length} пород в этой категории.</p><div class="breed-grid">${topBreeds.map(({ breed, score }, index) => `<article class="breed-card"><img src="${breed.image || 'assets/dog-image-2.png'}" alt="${breed.nameRu}"><div class="breed-card-body"><div class="breed-card-meta"><span class="breed-rank">${index + 1} место</span><span class="breed-score">Совместимость ${score}/100</span></div><h3>${breed.nameRu}</h3><p class="breed-description">${breedSubtitle(breed)}</p></div></article>`).join('')}</div></section>${comparisonTable(topBreeds)}${rankedRest}${result.alternative ? `<section class="result-section result-card alternative-card"><h2>Близкая альтернатива</h2><p>${fciNames[result.alternative.group]} — ${result.alternative.score}/100. Она уступила основной категории по совпадению ключевых требований.</p><button class="button" id="show-alternative" type="button">Смотреть породы</button></section>` : ''}${breedExplorerMarkup()}${commonResultSections()}</main>`;
   bindConsultation();
   document.querySelector('#show-alternative')?.addEventListener('click', () => openAlternativeGroup(profile, result.alternative.group));
   bindBreedExplorer(profile);
@@ -636,11 +639,11 @@ function renderResult(profileOverride = null) {
 
 function commonResultSections(includeProfile = true) {
   const profileSection = includeProfile ? `<section class="result-section result-card"><h2>Ваш профиль предпочтений</h2><ul class="result-list">${profileRows()}</ul></section>` : '';
-  return `${profileSection}<section class="result-section next-steps"><h2>Что делать дальше</h2><div class="next-grid"><article class="result-card"><h3>Чек-лист до появления собаки</h3><ul class="result-list"><li>Познакомиться с конкретной собакой или родителями щенка.</li><li>Проверить документы, условия содержания и обследования.</li><li>Подготовить лежанку, миски, корм, игрушки, шлейку и обычный поводок.</li></ul></article><article class="result-card consultation-card"><h3>Консультация с кинологом</h3><p>Разберём ваши ответы, образ жизни и несколько конкретных пород до решения.</p><button class="button" id="consultation-button" type="button">Оставить заявку</button></article></div></section><section class="result-section result-card"><h2>Жизнь с собакой</h2><p class="section-note">Даже хорошо подобранная собака остаётся собакой. Это ежедневные прогулки, расходы на корм и ветеринара, организация поездок, обучение, грязные лапы и иногда испорченные вещи. Щенок может первое время ходить в туалет дома, будить ночью, грызть вещи и плохо оставаться один. Взрослой собаке тоже понадобится время на адаптацию. Хороший подбор делает совместную жизнь проще, но не делает собаку беспроблемной.</p><p class="table-note">Породный профиль описывает тенденции, а не гарантирует характер конкретной собаки.</p></section><section class="result-section bri-support"><img src="assets/dog-image-2.png" alt="Бри"><div><p class="result-kicker">Для Бри и проекта</p><h2>На новую игрушку Бри</h2><p>Тест останется бесплатным. Если он оказался полезен, можно поддержать проект.</p><a class="button" href="${donationUrl}" target="_blank" rel="noopener" data-donation="result">Поддержать проект</a></div></section>${footer()}`;
+  return `${profileSection}<section class="result-section next-steps"><h2>Что делать дальше</h2><div class="next-grid"><article class="result-card"><h3>Чек-лист до появления собаки</h3><ul class="result-list"><li>Познакомиться с конкретной собакой или родителями щенка.</li><li>Проверить документы, условия содержания и обследования.</li><li>Подготовить лежанку, миски, корм, игрушки, шлейку и обычный поводок.</li></ul></article><article class="result-card consultation-card"><h3>Консультация с кинологом</h3><p>Разберём ваши ответы, образ жизни и несколько конкретных пород до решения.</p><button class="button" id="consultation-button" type="button">Оставить заявку</button></article></div></section><section class="result-section result-card"><h2>Жизнь с собакой</h2><p class="section-note">Даже хорошо подобранная собака остаётся собакой. Это ежедневные прогулки, расходы на корм и ветеринара, организация поездок, обучение, грязные лапы и иногда испорченные вещи. Щенок может первое время ходить в туалет дома, будить ночью, грызть вещи и плохо оставаться один. Взрослой собаке тоже понадобится время на адаптацию. Хороший подбор делает совместную жизнь проще, но не делает собаку беспроблемной.</p><p class="table-note">Породный профиль описывает тенденции, а не гарантирует характер конкретной собаки.</p></section><section class="result-section bri-support"><img src="assets/dog-image-2.png" alt="Бри"><div><h2>На новую игрушку Бри</h2><p>Тест останется бесплатным. Если он оказался полезен, можно поддержать проект.</p><a class="button" href="${donationUrl}" target="_blank" rel="noopener" data-donation="result">Поддержать проект</a></div></section>${footer()}`;
 }
 
 function renderDatabasePending(profile) {
-  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=3" alt="Мой пёс"></a></header><section class="result-hero pause"><p class="result-kicker">Тест пройден</p><h1>Ваш профиль готов.<br>Нужна база пород.</h1><p>Калибровка подключена, но в переданных материалах нет проверенных профилей пород. Я не буду подменять их случайными рекомендациями: без базы нельзя честно посчитать FCI-группу и подходящие породы.</p></section><section class="result-section result-card"><h2>Ваш профиль предпочтений</h2><ul class="result-list">${profileRows()}</ul></section><section class="result-section result-card"><h2>Что появится после загрузки базы</h2><ul class="result-list"><li>Одна FCI-группа, посчитанная по лучшим конкретным породам.</li><li>Три породы с баллом совместимости, а не вероятностью.</li><li>Причины совпадения, возможные сложности и близкая альтернатива.</li></ul></section>${commonResultSections(false)}</main>`;
+  app.innerHTML = `<main class="result-page"><header class="result-header"><a href="index.html" class="quiz-logo"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><section class="result-hero pause"><p class="result-kicker">Тест пройден</p><h1>Ваш профиль готов.<br>Нужна база пород.</h1><p>Калибровка подключена, но в переданных материалах нет проверенных профилей пород. Я не буду подменять их случайными рекомендациями: без базы нельзя честно посчитать FCI-группу и подходящие породы.</p></section><section class="result-section result-card"><h2>Ваш профиль предпочтений</h2><ul class="result-list">${profileRows()}</ul></section><section class="result-section result-card"><h2>Что появится после загрузки базы</h2><ul class="result-list"><li>Одна FCI-группа, посчитанная по лучшим конкретным породам.</li><li>Три породы с баллом совместимости, а не вероятностью.</li><li>Причины совпадения, возможные сложности и близкая альтернатива.</li></ul></section>${commonResultSections(false)}</main>`;
   bindConsultation();
 }
 

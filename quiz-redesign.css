@@ -11,10 +11,12 @@
 
 /* v3: selection must remain unmistakable after every re-render. */
 .quiz-page .answer.selected{background:#dfe9d3!important;box-shadow:inset 0 0 0 2px #2f6540;color:#153322}.selection-count{position:relative;z-index:1;margin:16px 0 -2px;color:#77756d;font:400 16px 'CoFo Sans',Arial,sans-serif}.quiz-progress .progress{overflow:hidden}.quiz-progress .progress i{transition:width .28s ease!important}@media(max-width:720px){.selection-count{font-size:15px}}
-.answer-scale{position:relative;z-index:1;padding:30px 38px 23px;background:#fff;border-radius:13px}.scale-value{min-height:38px;margin:0 0 28px;color:#6f716c;font:400 25px/1.25 'CoFo Sans',Arial,sans-serif}.answer-scale.is-selected .scale-value{color:#153322}.scale-input{position:relative;z-index:2;width:100%;height:30px;margin:0;appearance:none;background:transparent;cursor:pointer}.scale-input::-webkit-slider-runnable-track{height:7px;background:#d9dfd2;border-radius:99px}.scale-input::-moz-range-track{height:7px;background:#d9dfd2;border-radius:99px}.scale-input::-webkit-slider-thumb{appearance:none;width:28px;height:28px;margin-top:-10px;border:4px solid #fff;border-radius:50%;background:#2f6540;box-shadow:0 0 0 2px #2f6540}.scale-input::-moz-range-thumb{width:20px;height:20px;border:4px solid #fff;border-radius:50%;background:#2f6540;box-shadow:0 0 0 2px #2f6540}.scale-points{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin:-19px 0 23px;padding:0 2px;pointer-events:none}.scale-points i{width:10px;height:10px;border-radius:50%;background:#9dac96}.scale-ends{display:flex;justify-content:space-between;gap:28px;color:#77756d;font:400 16px/1.25 'CoFo Sans',Arial,sans-serif}.scale-ends span{width:48%}.scale-ends span:last-child{text-align:right}.scale-unknown{position:relative;z-index:1;margin-top:13px;padding:0;border:0;border-bottom:1px solid #77756d;background:none;color:#77756d;font:400 17px 'CoFo Sans',Arial,sans-serif;cursor:pointer}.scale-unknown.selected{color:#2f6540;border-color:#2f6540}@media(max-width:720px){.answer-scale{padding:25px 23px 21px;border-radius:12px}.scale-value{min-height:62px;margin-bottom:24px;font-size:22px}.scale-ends{gap:18px;font-size:14px}.scale-unknown{font-size:16px}}
+.quiz-page .answers:not(.answers-multi) .answer{height:auto;min-height:82px;padding-top:17px;padding-bottom:17px;line-height:1.15}
+@media(max-width:720px){.quiz-page .answers:not(.answers-multi) .answer{min-height:72px;padding-top:15px;padding-bottom:15px}}
+.answer-scale{position:relative;z-index:1;padding:30px 38px 23px;background:#fff;border-radius:13px}.scale-value{min-height:38px;margin:0 0 28px;color:#6f716c;font:400 25px/1.25 'CoFo Sans',Arial,sans-serif}.answer-scale.is-selected .scale-value{color:#153322}.scale-control{position:relative;height:30px}.scale-line{position:absolute;z-index:0;left:0;right:0;top:50%;height:7px;border-radius:99px;background:#d9dfd2;transform:translateY(-50%)}.scale-input{position:absolute;z-index:3;inset:0;width:100%;height:30px;margin:0;appearance:none;background:transparent;cursor:pointer}.scale-input::-webkit-slider-runnable-track{height:30px;background:transparent}.scale-input::-moz-range-track{height:30px;background:transparent}.scale-input::-webkit-slider-thumb{appearance:none;width:28px;height:28px;margin-top:1px;border:4px solid #fff;border-radius:50%;background:#2f6540;box-shadow:0 0 0 2px #2f6540}.scale-input::-moz-range-thumb{width:20px;height:20px;border:4px solid #fff;border-radius:50%;background:#2f6540;box-shadow:0 0 0 2px #2f6540}.answer-scale:not(.is-selected) .scale-input::-webkit-slider-thumb{opacity:0;box-shadow:none}.answer-scale:not(.is-selected) .scale-input::-moz-range-thumb{opacity:0;box-shadow:none}.scale-points{display:flex;justify-content:space-between;align-items:center;position:absolute;z-index:2;left:0;right:0;top:50%;margin:0;padding:0 2px;transform:translateY(-50%);pointer-events:none}.scale-points i{width:10px;height:10px;border-radius:50%;background:#9dac96}.scale-ends{display:flex;justify-content:space-between;gap:28px;margin-top:16px;color:#77756d;font:400 16px/1.25 'CoFo Sans',Arial,sans-serif}.scale-ends span{width:48%}.scale-ends span:last-child{text-align:right}.scale-unknown{position:relative;z-index:1;margin-top:13px;padding:0;border:0;border-bottom:1px solid #77756d;background:none;color:#77756d;font:400 17px 'CoFo Sans',Arial,sans-serif;cursor:pointer}.scale-unknown.selected{color:#2f6540;border-color:#2f6540}@media(max-width:720px){.answer-scale{padding:25px 23px 21px;border-radius:12px}.scale-value{min-height:62px;margin-bottom:24px;font-size:22px}.scale-ends{gap:18px;font-size:14px}.scale-unknown{font-size:16px}}
 .match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.match-grid .result-card{min-height:0}.match-grid .result-section{margin-top:0}@media(max-width:720px){.match-grid{grid-template-columns:1fr;gap:10px}}
 .trait-meter{display:inline-flex;gap:5px;align-items:center;vertical-align:middle}.trait-meter i{display:block;width:23px;height:9px;border-radius:99px;background:#dcd8cf}.trait-meter i.on{background:#2f6540}.trait-no-data{color:#8a877f}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:720px){.trait-meter{gap:4px}.trait-meter i{width:18px;height:8px}}
-.breed-ranking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:19px}.breed-ranking-card{overflow:hidden;background:#fff;border-radius:17px}.breed-ranking-card>img{display:block;width:100%;aspect-ratio:1.35;object-fit:cover;background:#e6dfd1}.breed-ranking-card>div{padding:18px}.breed-ranking-card h3{margin:0 0 9px;font:400 23px/1.04 'Red Rounded Cut',sans-serif;letter-spacing:-1px}.breed-ranking-card p{margin:0;color:#2f6540;font:400 15px 'CoFo Sans',Arial,sans-serif}@media(max-width:720px){.breed-ranking-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.breed-ranking-card>div{padding:15px}.breed-ranking-card h3{font-size:19px}.breed-ranking-card p{font-size:14px}}
+.breed-ranking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:19px}.breed-ranking-card{overflow:hidden;background:#fff;border-radius:17px}.breed-ranking-card>img{display:block;width:100%;aspect-ratio:1.35;object-fit:cover;background:#e6dfd1}.breed-ranking-card>div{padding:18px}.breed-ranking-card h3{margin:0 0 9px;font:400 23px/1.04 'Red Rounded Cut',sans-serif;letter-spacing:-1px}.breed-ranking-card p{margin:0;color:#2f6540;font:400 15px 'CoFo Sans',Arial,sans-serif}@media(max-width:720px){.breed-ranking-grid{grid-template-columns:minmax(0,1fr);gap:10px}.breed-ranking-card>div{padding:18px}.breed-ranking-card h3{font-size:23px}.breed-ranking-card p{font-size:14px}}
 .breed-card-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.breed-score{color:#2f6540;white-space:nowrap;font:400 14px 'CoFo Sans',Arial,sans-serif}.breed-card .breed-description,.breed-ranking-card .breed-description{min-height:43px;margin:0 0 15px;color:#6b655d;font:400 15px/1.4 'CoFo Sans',Arial,sans-serif}.breed-ranking-card .breed-description{min-height:60px;color:#6b655d}.breed-ranking-card .breed-card-meta{margin-bottom:13px}@media(max-width:720px){.breed-card-meta{margin-bottom:13px}.breed-score{font-size:13px}.breed-card .breed-description{min-height:0;font-size:14px}.breed-ranking-card .breed-description{min-height:0;font-size:13px}}
 .alternative-card .button,.result-back{margin-top:4px;border:0;border-radius:12px;padding:14px 18px;background:#2f6540;color:#fff;font:400 17px 'CoFo Sans',Arial,sans-serif;cursor:pointer;transition:transform .18s ease,background .18s ease}.alternative-card .button:hover,.result-back:hover{background:#255437;transform:translateY(-2px)}.result-back{background:#fff;color:#2f6540;margin-top:25px}
 .breed-explorer-controls{display:grid;grid-template-columns:1.1fr 1.1fr auto;gap:10px;margin-top:22px}.breed-explorer-controls input,.breed-explorer-controls select{min-width:0;height:52px;padding:0 16px;border:1px solid #e1dbcf;border-radius:11px;background:#fff;color:#181814;font:400 16px 'CoFo Sans',Arial,sans-serif}.breed-explorer-controls .button{border:0;border-radius:11px;padding:0 18px;background:#2f6540;color:#fff;font:400 16px 'CoFo Sans',Arial,sans-serif;white-space:nowrap;cursor:pointer}.breed-explorer-error{margin:12px 0 0!important;color:#a64a3d!important;font-size:15px!important}.breed-profile-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.breed-profile-card{display:grid;grid-template-columns:.9fr 1.1fr;overflow:hidden;border-radius:18px;background:#fff}.breed-profile-card>img{width:100%;height:100%;min-height:295px;object-fit:cover;background:#e6dfd1}.breed-profile-card>div{padding:29px}.breed-profile-card h2{font:400 32px/1 'Red Rounded Cut',sans-serif;letter-spacing:-1.5px;margin:0 0 16px}.breed-profile-card p{font:400 17px/1.45 'CoFo Sans',Arial,sans-serif;margin:0 0 16px}.breed-risks-heading{font:400 24px/1 'Red Rounded Cut',sans-serif;letter-spacing:-1px;margin:29px 0 14px}.breed-detail-table td:last-child{width:68%}@media(max-width:720px){.breed-explorer-controls{grid-template-columns:1fr}.breed-explorer-controls input,.breed-explorer-controls select,.breed-explorer-controls .button{height:54px}.breed-profile-layout{grid-template-columns:1fr;gap:10px}.breed-profile-card{grid-template-columns:1fr}.breed-profile-card>img{min-height:230px;max-height:320px}.breed-profile-card>div{padding:23px}.breed-detail-table td:last-child{width:auto}}
@@ -46,4 +48,45 @@
   .quiz-page .nav{margin-top:14px}
   .quiz-page .back,.quiz-page .button{padding:13px 30px;font-size:22px}
   .quiz-page .site-footer{padding-top:18px}
+}
+
+/* Компактный мобильный экран квиза: вопрос и ответы видны без декоративной иллюстрации. */
+@media(max-width:720px){
+  .quiz-page{padding:20px 18px;min-height:100svh}
+  .quiz-logo img{width:128px;height:42px}
+  .quiz-content{margin-top:20px}
+  .question-art{display:none}
+  .quiz-content:not(.with-art):before{display:none;content:none}
+  .quiz-progress{margin-bottom:22px;font-size:15px}
+  .quiz-progress span{margin-bottom:9px}
+  .quiz-progress .progress{width:100%;height:9px}
+  .quiz-content h1{font-size:clamp(30px,8.7vw,40px);line-height:.98;letter-spacing:-2px;margin-bottom:22px;text-wrap:balance}
+  .question-hint{font-size:14px;line-height:1.35;margin:-12px 0 18px}
+  .quiz-page .answers{gap:10px}
+  .quiz-page .answer{min-height:58px;height:auto;padding:14px 20px;font-size:18px;line-height:1.2}
+  .quiz-page .answers-multi .answer{padding-right:58px}
+  .quiz-page .answers-multi .answer:after{right:20px;width:20px;height:20px}
+  .answer-scale{padding:19px 18px 17px}
+  .scale-value{min-height:28px;margin-bottom:17px;font-size:18px}
+  .scale-points{margin-bottom:16px}
+  .scale-ends{font-size:12px}
+  .quiz-page .nav{margin-top:14px;padding-top:0}
+  .quiz-page .back,.quiz-page .button{padding:13px 20px;font-size:18px}
+  .site-footer{padding-top:26px;font-size:14px}
+  .site-footer img{width:34px;height:34px}
+}
+
+/* Компактный первый экран результатов на мобильных устройствах. */
+@media(max-width:720px){
+  .result-page{padding:20px 18px}
+  .result-page .result-header{margin-bottom:22px}
+  .result-page .result-hero{min-height:0;padding:25px 20px;border-radius:20px}
+  .result-page .result-hero:after{display:none}
+  .result-page .result-hero h1{max-width:none;margin-bottom:15px;font-size:clamp(30px,8.5vw,36px);line-height:.98;letter-spacing:-2px;text-wrap:balance}
+  .result-page .result-hero>p:not(.result-kicker){font-size:15px;line-height:1.38}
+  .result-page .result-kicker{margin-bottom:10px;font-size:14px}
+  .result-page,.result-page .result-hero,.result-page .result-section,.result-page .breed-grid,.result-page .breed-card{min-width:0;max-width:100%}
+  .result-page .breed-grid{grid-template-columns:minmax(0,1fr)}
+  .result-page .breed-card h3,.result-page .result-section h2{overflow-wrap:anywhere}
+  .result-page .breed-card-meta{flex-wrap:wrap}
 }
