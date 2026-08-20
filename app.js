@@ -98,9 +98,9 @@ const coreQuestions = [
     option('grooming_1', 'Почти не ухаживаю', { groomingMax: 1 }), option('grooming_2', 'Расчёсываю примерно раз в неделю', { groomingMax: 2 }),
     option('grooming_3', 'Расчёсываю несколько раз в неделю', { groomingMax: 3 }), option('grooming_4', 'Регулярно расчёсываю и стригу', { groomingMax: 4 }), option('grooming_5', 'Часто ухаживаю и хожу к грумеру', { groomingMax: 5 }), option('grooming_unknown', 'Не знаю', null, { unknown: 'grooming' })
   ]),
-  question('health', 'Насколько риск врождённых проблем со здоровьем может повлиять на ваш выбор?', [
-    option('health_1', 'Сильно повлияет — хочу минимальные риски', { healthBurdenMax: 1 }), option('health_2', 'Важно — здоровье сильно влияет на мой выбор', { healthBurdenMax: 2 }),
-    option('health_3', 'Учту, но это не главный фактор', { healthBurdenMax: 3 }), option('health_4', 'Готов принять заметные породные риски', { healthBurdenMax: 4 }), option('health_5', 'Почти не повлияет на мой выбор', { healthBurdenMax: 5 }), option('health_unknown', 'Не знаю', null, { unknown: 'healthBurden' })
+  question('health', 'У некоторых пород из-за строения тела и наследственности чаще встречаются проблемы со здоровьем. Насколько для вас важно снизить такие риски?', [
+    option('health_1', 'Очень важно — хочу породу с минимальными рисками', { healthBurdenMax: 1 }), option('health_2', 'Важно — породные риски сильно повлияют на мой выбор', { healthBurdenMax: 2 }),
+    option('health_3', 'Учту риски, но это не главный фактор', { healthBurdenMax: 3 }), option('health_4', 'Готов к заметным породным рискам', { healthBurdenMax: 4 }), option('health_5', 'Это почти не повлияет на мой выбор', { healthBurdenMax: 5 }), option('health_unknown', 'Не знаю', null, { unknown: 'healthBurden' })
   ], { helper: 'Речь о породных тенденциях, а не прогнозе здоровья конкретной собаки.' }),
   question('dealbreakers', 'Какие 3 особенности помешают вашей совместной жизни?', [
     option('db_activity', 'Нужно очень много гулять каждый день', null, { boostTrait: 'activity' }), option('db_mental', 'Постоянно требует занятий и развлечений', null, { boostTrait: 'mentalWork' }),
