@@ -74,9 +74,9 @@ const coreQuestions = [
     option('gd1', 'Не реагирует и спокойно продолжает отдыхать', { guarding: 1 }), option('gd2', 'Прислушивается, но быстро успокаивается', { guarding: 2 }),
     option('gd3', 'Настораживается и прислушивается к шуму', { guarding: 3 }), option('gd4', 'Идёт проверить, что происходит', { guarding: 4 }), option('gd5', 'Активно охраняет дом и предупреждает о незнакомце', { guarding: 5 })
   ]),
-  question('dog_sociability', 'Как ваша собака ведет себя с другими собаками', [
-    option('d5', 'Спокойно проходит мимо или дружелюбно знакомится', { dogSociabilityMin: 5 }), option('d4', 'Не стремится общаться, но спокойно проходит мимо', { dogSociabilityMin: 4 }),
-    option('d3', 'Иногда напрягается — нужно помочь ей переключиться', { dogSociabilityMin: 3 }), option('d2', 'Старается избегать контакта — нужна дистанция', { dogSociabilityMin: 2 }), option('d1', 'Может резко реагировать — встречи требуют постоянного контроля', { dogSociabilityMin: 1 })
+  question('dog_sociability', 'Какое поведение собаки при встрече с другими собаками будет для вас комфортным?', [
+    option('d5', 'Хочу, чтобы встречи почти всегда проходили спокойно', { dogSociabilityMin: 5 }), option('d4', 'Мне подходит собака, которая не ищет общения, но спокойно проходит мимо', { dogSociabilityMin: 4 }),
+    option('d3', 'Готов иногда помогать собаке переключаться', { dogSociabilityMin: 3 }), option('d2', 'Готов соблюдать дистанцию и избегать близких встреч', { dogSociabilityMin: 2 }), option('d1', 'Готов постоянно контролировать встречи с другими собаками', { dogSociabilityMin: 1 })
   ], { helper: 'Здесь речь не о том, должна ли собака играть со всеми, а о том, насколько легко ей спокойно находиться рядом с другими собаками.' }),
   question('affection', 'Вы дома смотрите фильм. Что делает ваша собака?', [
     option('f5', 'Лежит рядом с вами или на коленях', { affection: 5 }), option('f4', 'Отдыхает рядом в той же комнате', { affection: 4 }),
@@ -86,9 +86,9 @@ const coreQuestions = [
     option('o5', 'Спокойно отдыхает', { offSwitch: 5 }), option('o4', 'Отдыхает, иногда предлагает поиграть', { offSwitch: 4 }),
     option('o3', 'То отдыхает, то ищет себе занятие', { offSwitch: 3 }), option('o2', 'Долго ходит по дому, играет и ищет занятие', { offSwitch: 2 }), option('o1', 'Продолжает активно играть и требует внимания', { offSwitch: 1 })
   ]),
-  question('sensitivity', 'На улице что-то неожиданно упало, как отреагирует ваша собака?', [
-    option('sensitivity_1', 'Вздрогнет, но быстро успокоится', { sensitivityMax: 1 }), option('sensitivity_2', 'Немного насторожится и быстро придёт в себя', { sensitivityMax: 2 }),
-    option('sensitivity_3', 'Испугается, но через некоторое время успокоится', { sensitivityMax: 3 }), option('sensitivity_4', 'Сильно испугается — понадобится моя поддержка', { sensitivityMax: 4 }), option('sensitivity_5', 'Может долго бояться — понадобится много работы', { sensitivityMax: 5 }), option('sensitivity_unknown', 'Не знаю', null, { unknown: 'sensitivity' })
+  question('sensitivity', 'Насколько чувствительная к шуму и неожиданным событиям собака будет для вас комфортна?', [
+    option('sensitivity_1', 'Хочу устойчивую собаку, которая быстро приходит в себя', { sensitivityMax: 1 }), option('sensitivity_2', 'Небольшая настороженность меня не беспокоит', { sensitivityMax: 2 }),
+    option('sensitivity_3', 'Готов помогать собаке справляться со страхом', { sensitivityMax: 3 }), option('sensitivity_4', 'Готов регулярно работать с чувствительной собакой', { sensitivityMax: 4 }), option('sensitivity_5', 'Высокая чувствительность для меня не проблема', { sensitivityMax: 5 }), option('sensitivity_unknown', 'Не знаю', null, { unknown: 'sensitivity' })
   ]),
   question('vocality', 'Насколько голосистая ваша собака?', [
     option('vocality_1', 'Почти не лает', { vocalityMax: 1 }), option('vocality_2', 'Лает редко', { vocalityMax: 2 }),
