@@ -1,4 +1,5 @@
 const app = document.querySelector('#app');
+const homeMarkup = app.innerHTML;
 const analytics = window.MyPesAnalytics || { goal() {}, answer() {} };
 const donationUrl = 'https://tips.yandex.ru/guest/payment/9472970';
 
@@ -257,7 +258,10 @@ function footer() { return `<footer class="site-footer"><a href="${donationUrl}"
 function home() {
   const isLoading = breedProfilesStatus === 'loading';
   const startCopy = isLoading ? 'Загружаем базу…' : 'Бесплатный тест';
-  app.innerHTML = `<main class="landing-page"><section class="landing-copy"><header class="landing-header"><a class="brand-lockup" href="index.html"><img src="assets/logo.svg?v=4" alt="Мой пёс"></a></header><div class="landing-main"><h1>Какая<br>собака мне<br>подойдёт?</h1><p>Выбери собаку не по внешности,<br class="appearance-break">а&nbsp;по характеру, образу жизни и&nbsp;тому,<br>насколько вам будет комфортно вместе</p><div class="landing-cta"><button class="button" id="start" type="button" ${isLoading ? 'disabled' : ''}>${startCopy}</button><span><i>◷</i> 5 мин</span></div></div><footer class="landing-footer"><a href="${donationUrl}" target="_blank" rel="noopener" data-donation="landing">Поддержать проект&nbsp; →</a><img class="heart-icon" src="assets/heart.svg?v=2" alt="Поддержать проект"></footer></section><figure class="landing-photo"><img src="assets/dog-image-2.png" alt="Собака лежит на траве"></figure></main>`;
+  app.innerHTML = homeMarkup;
+  const startButton = document.querySelector('#start');
+  startButton.disabled = isLoading;
+  startButton.textContent = startCopy;
   document.querySelector('#start').addEventListener('click', () => { coreIndex = 0; adaptiveIndex = 0; activeAdaptive = []; answers = {}; analytics.goal('quiz_start'); renderQuestion(); });
 }
 
