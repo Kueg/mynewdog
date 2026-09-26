@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#edf0d9" />
-    <title>Мой пёс — тест по совместимости</title>
+    <title>Какая собака мне подойдёт — тест | Мой пёс</title>
+    <meta name="description" content="Пройдите бесплатный тест за 5 минут и узнайте, какие породы собак подходят вашему образу жизни. Сравните потребности собаки со своими возможностями." />
+    <link rel="canonical" href="https://mynewdog.ru/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="Мой пёс" />
+    <meta property="og:title" content="Какая собака мне подойдёт? — Мой пёс" />
+    <meta property="og:description" content="Бесплатный тест помогает выбрать собаку с учётом характера и образа жизни." />
+    <meta property="og:url" content="https://mynewdog.ru/" />
+    <meta property="og:image" content="https://mynewdog.ru/assets/dog-image-2.png" />
+    <meta property="og:image:alt" content="Собака лежит на траве" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Мой пёс","url":"https://mynewdog.ru/","description":"Бесплатный тест по выбору собаки с учётом образа жизни и предпочтений человека."}</script>
     <link rel="icon" type="image/png" href="favicon.png?v=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,14 +25,42 @@
     <link rel="stylesheet" href="logo-fix.css?v=1" />
     <link rel="stylesheet" href="spacing-fix.css?v=3" />
     <link rel="stylesheet" href="mobile-hero-fix.css?v=4" />
-  <link rel="stylesheet" href="quiz-redesign.css?v=25" />
+    <link rel="stylesheet" href="quiz-redesign.css?v=25" />
+    <link rel="stylesheet" href="guide.css?v=1" />
   </head>
   <body>
-    <main id="app"></main>
+    <div id="app">
+      <main class="landing-home">
+        <section class="landing-page" aria-label="Тест по выбору собаки">
+          <div class="landing-copy">
+            <header class="landing-header"><a class="brand-lockup" href="/"><img src="assets/logo.svg?v=4" alt="Мой пёс" /></a></header>
+            <div class="landing-main">
+              <h1>Какая<br />собака мне<br />подойдёт?</h1>
+              <p>Выбери собаку не по внешности,<br class="appearance-break" />а&nbsp;по характеру, образу жизни и&nbsp;тому, <br />насколько вам будет комфортно вместе</p>
+              <div class="landing-cta"><button class="button" id="start" type="button" disabled>Загружаем базу…</button><span><i>◷</i> 5 мин</span></div>
+            </div>
+            <footer class="landing-footer"><a href="https://tips.yandex.ru/guest/payment/9472970" target="_blank" rel="noopener" data-donation="landing">Поддержать проект&nbsp; →</a><img class="heart-icon" src="assets/heart.svg?v=2" alt="" /></footer>
+          </div>
+          <figure class="landing-photo"><img src="assets/dog-image-2.png" alt="Собака лежит на траве" /></figure>
+        </section>
+        <section class="landing-resources" aria-labelledby="resources-title">
+          <div class="landing-resources-inner">
+            <p class="guide-eyebrow">Перед выбором собаки</p>
+            <h2 id="resources-title">Подберите собаку под вашу жизнь</h2>
+            <p class="landing-resources-lead">Порода может подсказать типичные потребности, но не предсказать характер конкретной собаки. Начните с времени на прогулки и занятия, условий дома и расходов на уход. Тест поможет сравнить ваши ответы с породными профилями, а эти материалы — разобраться в самом выборе.</p>
+            <nav class="landing-resource-grid" aria-label="Материалы о выборе собаки">
+              <a href="guide/choose-dog.html"><span>01</span><h3>Как выбрать собаку</h3><p>Пять вопросов о времени, доме, уходе и знакомстве с будущим питомцем.</p><b>Читать →</b></a>
+              <a href="guide/apartment-dog.html"><span>02</span><h3>Собака для квартиры</h3><p>Что важно проверить кроме размера: прогулки, шум, отдых дома и ваше расписание.</p><b>Читать →</b></a>
+              <a href="guide/how-test-works.html"><span>03</span><h3>Как работает тест</h3><p>Какие данные мы сравниваем и почему результат не является гарантией.</p><b>Читать →</b></a>
+            </nav>
+          </div>
+        </section>
+      </main>
+    </div>
     <noscript><div><img src="https://mc.yandex.ru/watch/111696168" style="position:absolute;left:-9999px" alt=""></div></noscript>
     <script>window.MY_PES_METRIKA_ID = 111696168;</script>
     <script src="analytics.js?v=2"></script>
     <script src="quiz-calculator.js?v=1"></script>
-  <script src="app.js?v=74"></script>
+    <script src="app.js?v=75"></script>
   </body>
 </html>
